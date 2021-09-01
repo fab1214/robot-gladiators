@@ -3,6 +3,14 @@ var playerHealth = 100;
 var playerAttack = 10;
 var playerMoney = 10;
 
+//function to generate a random numeric value
+var randomNumber = function(min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return value;
+};
+
+
 // You can also log multiple values at once like this
 console.log(playerName, playerAttack, playerHealth);
 
@@ -28,13 +36,16 @@ var fight = function (enemyName) {
       if (confirmSkip) {
         window.alert(playerName + " has decided to skip the fight. Goodbye!");
         //subtract money from playerMoney for skipping
-        playerMoney = playerMoney - 10;
+        playerMoney = Math.max(0, playerMoney - 10);
         console.log("playerMoney", playerMoney);
         break;
       }
     }
     //Subtract the value of 'playerAttack' from the value of 'enemyHealth' and use that result to update the value in the 'eneyHealth' variable
-    enemyHealth = enemyHealth - playerAttack;
+    //generate random damage value based on player's attack ppwer
+    var damage = randomNumber(playerAttack - 3, playerAttack);
+
+    enemyHealth = Math.max(0, enemyHealth - damage);
     console.log(
       playerName +
         " attacked " +
@@ -60,7 +71,7 @@ var fight = function (enemyName) {
     }
 
     //remove players's health by subtracting the amount set in the enemyAttack variable
-    playerHealth = playerHealth - enemyAttack;
+    playerHealth = Math.max(0, playerHealth - damage);
     console.log(
       enemyName +
         " attacked " +
@@ -100,7 +111,7 @@ var startGame = function () {
       var pickedEnemyName = enemyNames[i];
 
       //reset enemyHealth before starting new fight
-      enemyHealth = 50;
+      enemyHealth = randomNumber(40, 60);
       //use debugger to pause script from running and check what's going on at the moment in the code
       // debugger;
 
@@ -200,3 +211,4 @@ var shop = function () {
 };
 //start the game when the page loads
 startGame();
+
