@@ -1,27 +1,33 @@
+var fightOrSkip = function () {
+  var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose');
+  
+  if (promptFight === "" || promptFight === null) {
+    window.alert("You need to provide a valid answer! Please try again.");
+    return fightOrSkip();
+  }
+
+  promptFight = promptFight.toLowerCase();
+
+  if (promptFight === "skip") {
+
+    var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+
+    if (confirmSkip) {
+      window.alert(playerInfo.name + " has decided to skip this fight.");
+      playerInfo.money = Math.max(0, playerInfo.money - 10);
+
+      return true;
+    }
+  }
+  return false;
+};
+
 // fight function
 var fight = function (enemy) {
   // repeat and execute as long as the enenmy-robot is alive
   while (playerInfo.health > 0 && enemy.health > 0) {
-    //ask player if they'd like to fight or run
-    var promptFight = window.prompt(
-      "Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose."
-    );
-
-    //if player picks "skip" confirm and then stop the loop
-    if (promptFight === "skip" || promptFight === "SKIP") {
-      //confirm player wants to skip
-      var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-
-      //if yes (true), leave fight
-      if (confirmSkip) {
-        window.alert(
-          playerInfo.name + " has decided to skip the fight. Goodbye!"
-        );
-        //subtract money from playerInfo.money for skipping
-        playerInfo.money = Math.max(0, playerInfo.money - 10);
-        console.log("playerInfo.money", playerInfo.money);
-        break;
-      }
+    if(fightOrSkip()) {
+      break;
     }
     //Subtract the value of 'playerInfo.attack' from the value of 'enemyHealth' and use that result to update the value in the 'eneyHealth' variable
     //generate random damage value based on player's attack ppwer
@@ -188,7 +194,8 @@ var getPlayerName = function () {
     name = prompt("What is your robot's name?");
   }
   console.log("Your robot's name is " + name);
-}
+  return name;
+};
 
 var playerInfo = {
   name: getPlayerName(),
