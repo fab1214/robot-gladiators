@@ -24,8 +24,14 @@ var fightOrSkip = function () {
 
 // fight function
 var fight = function (enemy) {
+
+  var isPlayerTurn = true;
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
   // repeat and execute as long as the enenmy-robot is alive
   while (playerInfo.health > 0 && enemy.health > 0) {
+    if (isPlayerTurn) {
     if(fightOrSkip()) {
       break;
     }
@@ -57,7 +63,9 @@ var fight = function (enemy) {
     } else {
       window.alert(enemy.name + " still has " + enemy.health + " health left.");
     }
-
+    //player gets attacked first
+  } else {
+    var damage = randomNumber(enemy.attack - 3, enemy.attack);
     //remove players's health by subtracting the amount set in the enemyAttack variable
     playerInfo.health = Math.max(0, playerInfo.health - damage);
     console.log(
@@ -70,7 +78,6 @@ var fight = function (enemy) {
         playerInfo.health +
         " health remaining."
     );
-
     //check player health
     //if player isn't alive, stop the game
     if (playerInfo.health <= 0) {
@@ -78,9 +85,11 @@ var fight = function (enemy) {
       break;
     } else {
       window.alert(
-        playerInfo.name + " still has " + playerInfo.health + " health left."
-      );
+        playerInfo.name + " still has " + playerInfo.health + " health left.");
     }
+  }
+    // switch turn order for next round
+    isPlayerTurn = !isPlayerTurn;
   }
 };
 
@@ -183,7 +192,7 @@ var randomNumber = function (min, max) {
 // function to set name
 var getPlayerName = function () {
   var name = "";
-  while (name === "" || name === "null") {
+  while (name === "" || name === "null" || name === " ") {
     name = prompt("What is your robot's name?");
   }
   console.log("Your robot's name is " + name);
